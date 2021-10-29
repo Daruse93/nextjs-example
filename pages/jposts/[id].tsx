@@ -1,6 +1,11 @@
 import Head from 'next/head';
 
 import {
+    GetStaticPaths,
+    GetStaticProps,
+} from 'next';
+
+import {
     getAllJPostIds,
     getJPostData,
 } from '../../lib/posts';
@@ -9,8 +14,14 @@ import Layout from '../../components/layout';
 
 import utilStyles from '../../styles/utils.module.css';
 
+interface IProps {
+    postData: {
+        title: string;
+        body: string;
+    }
+}
 
-export default function Post({ postData }) {
+const JPost = ({ postData }: IProps) => {
     return (
         <Layout>
             <Head>
@@ -26,7 +37,9 @@ export default function Post({ postData }) {
     );
 }
 
-export async function getStaticPaths() {
+export default JPost;
+
+export const getStaticPaths: GetStaticPaths = async () => {
     const paths = await getAllJPostIds();
 
     return {
@@ -35,7 +48,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     const postData = await getJPostData(params.id);
 
     return {

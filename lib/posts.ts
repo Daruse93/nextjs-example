@@ -6,11 +6,16 @@ import html from 'remark-html';
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
+interface IPost {
+    [p: string]: any;
+    id: string;
+}
+
 export function getSortedPostsData() {
     // Get file names under /posts
     const fileNames = fs.readdirSync(postsDirectory);
 
-    const allPostsData = fileNames.map(fileName => {
+    const allPostsData: IPost[] = fileNames.map(fileName => {
         // Remove ".md" from file name to get id
         const id = fileName.replace(/\.md$/, '')
 
@@ -95,23 +100,15 @@ export async function getAllJPostIds() {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts?userId=1');
     const posts = await res.json();
 
-
-
-    const data = posts.map(item => ({
+    return posts.map(item => ({
         params: {
             id: item.id.toString(),
         }
     }));
-
-    console.log(data);
-
-    return data;
 }
 
 export async function getJPostData(id) {
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-    const post = await res.json();
-
     // Combine the data with the id
-    return post;
+    return await res.json();
 }

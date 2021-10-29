@@ -1,5 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link';
+
+import { GetStaticProps } from 'next'
+
 import Date from '../utils/date';
 
 import Layout, { siteTitle } from '../components/layout';
@@ -66,7 +69,7 @@ export default function Home({
     )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
     const allPostsData = getSortedPostsData();
     const allJPostsData = await getSortedJPostsData();
 
@@ -78,7 +81,7 @@ export async function getStaticProps() {
     }
 }
 
-// export async function getServerSideProps(context) {
+// export const getServerSideProps: GetServerSideProps  = async (context) => {
 //     console.log('context -> ', context);
 //     const allPostsData = getSortedPostsData();
 //     const allJPostsData = await getSortedJPostsData();
